@@ -94,16 +94,42 @@
       return result;
     },
 
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(majorDiagonalIndex){
+      // i = number of arrays to return
+      var n = Object.keys(this.attributes).length-1;
+      var startX = 0;
+      var startY = n-2;
+      var diagonal = [];
+      if (majorDiagonalIndex <= startY) {
+        x = startX;
+        y = startY-majorDiagonalIndex;
+      } else {
+        x = majorDiagonalIndex-startY;
+        y = 0;
+      }
+      while (Math.max(x,y) < n) {
+        diagonal.push(this.get(x)[y]);
+        x++;
+        y++;
+      }
+      var result = _.reduce(diagonal, function(sum, value){
+        return sum + value;
+      }, 0);
+      return result > 1 ? true : false;
     },
 
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      var result = false;
+      var n = Object.keys(this.attributes).length-1;
+      for(var i = 0; i < (2*n-3); i++) {
+        result = result || this.hasMajorDiagonalConflictAt(i);
+      }
+      return result; // fixme
     },
 
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(minorDiagonalIndex){
+      // var startX = 
+      // return false; // fixme
     },
 
     hasAnyMinorDiagonalConflicts: function(){
