@@ -100,13 +100,8 @@
       var startX = 0;
       var startY = n-2;
       var diagonal = [];
-      if (majorDiagonalIndex <= startY) {
-        x = startX;
-        y = startY-majorDiagonalIndex;
-      } else {
-        x = majorDiagonalIndex-startY;
-        y = 0;
-      }
+      x = Math.max(startX, majorDiagonalIndex-startY);
+      y = Math.max(startY-majorDiagonalIndex,0);
       while (Math.max(x,y) < n) {
         diagonal.push(this.get(x)[y]);
         x++;
