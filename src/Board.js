@@ -60,16 +60,12 @@
     hasRowConflictAt: function(rowIndex){
       var row = this.get(rowIndex);
       var result = _.reduce(row, function(sum, value){
-            return sum + value;
-          }, 0);
-      if(result > 1){
-        return true;
-      }
-      return false;
+        return sum + value;
+      }, 0);
+      return result > 1 ? true : false;
     },
 
     hasAnyRowConflicts: function(){
-      // debugger
       var that = this;
       var result = false;
       _.each(this.attributes, function(value, key){
@@ -79,11 +75,23 @@
     },
 
     hasColConflictAt: function(colIndex){
-      return false; // fixme
+      var col = [];
+      for(var i = 0; i < Object.keys(this.attributes).length - 1; i++){
+        col.push(this.get(i)[colIndex]);
+      }
+      var result = _.reduce(col, function(sum, value){
+        return sum + value;
+      }, 0);
+      return result > 1 ? true : false;
     },
 
     hasAnyColConflicts: function(){
-      return false; // fixme
+      var that = this;
+      var result = false;
+      _.each(this.attributes, function(value, key){
+        result = result || that.hasColConflictAt(key);
+      });
+      return result;
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
