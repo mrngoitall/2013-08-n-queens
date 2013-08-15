@@ -3,7 +3,7 @@
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
 
 window.findNRooksSolution = function(n){
-  var solution;
+  var solved = false;
   // Start with an empty board
   var boardLayout = [];
   var newRow = [];
@@ -14,24 +14,33 @@ window.findNRooksSolution = function(n){
     boardLayout[j] = newRow.slice();
   }
   var board = new Board(boardLayout);
-  var traverser = function(boardLayout, newRowNumber) {
-    // Unoptimized traverser
-    var traverseBoard = new Board(boardLayout);
-    // thisRow = array of 0s
-    var thisRow = traverseBoard.get(newRowNumber);
-    for (var i = 0; i < thisRow.length; i++) {
-      thisRow[i] = 1;
-      traverseBoard.set(newRowNumber,thisRow.slice());
-      thisRow[i] = 0;
-      if (newRowNumber === thisRow.length-1) {
-        if (!traverseBoard.hasAnyRooksConflicts()) {
-          board = new Board(traverseBoard.rows());
+  var traverser = function(boardLayout, newRowNumber, rookColumns) {
+    rookColumns = rookColumns || [];
+    if (!solved) {
+      // Unoptimized traverser
+      var traverseBoard = new Board(boardLayout);
+      // thisRow = array of 0s
+      var thisRow = traverseBoard.get(newRowNumber);
+      for (var i = 0; i < thisRow.length; i++) {
+        if (!_(rookColumns).contains(i)) {
+          thisRow[i] = 1;
+          traverseBoard.set(newRowNumber,thisRow.slice());
+          thisRow[i] = 0;
+          if (newRowNumber === thisRow.length-1) {
+            if (!traverseBoard.hasAnyRooksConflicts()) {
+              board = new Board(traverseBoard.rows());
+              solved = true;
+            }
+          } else {
+            rookColumns.push(i);
+            traverser(traverseBoard.rows(),newRowNumber+1,rookColumns);
+          }
         }
-      } else traverser(traverseBoard.rows(),newRowNumber+1);
+      }
     }
   };
   traverser(board.rows(),0);
-  console.log('Single solution for ' + n + ' rooks:', solution);
+  console.log('Single solution for ' + n + ' rooks:', solved);
   console.log(board.rows());
   return board.rows();
 };
