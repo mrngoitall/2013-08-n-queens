@@ -41,12 +41,14 @@ describe("Board", function() {
   });
 
   it("should find major diagonal conflicts", function() {
+    console.log('checking major diagonal');
     verifyConflictTypes(['majorDiagonal', 'queens'], [
       [0, 1, 0, 0],
       [0, 0, 1, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0]
     ]);
+    console.log('finished major diagonal test');
   });
 
   it("should find minor diagonal conflicts", function() {
