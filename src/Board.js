@@ -97,7 +97,7 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalIndex){
       var that = this;
       var row = this.get(majorDiagonalIndex);
-      var n = Object.keys(this.attributes).length-1;
+      var n = this.get('n');
       var result = false;
       var lookRight = function(row,column) {
         row++;
@@ -122,7 +122,7 @@
 
     hasAnyMajorDiagonalConflicts: function(){
       var result = false;
-      var n = Object.keys(this.attributes).length-1;
+      var n = this.get('n');
       for(var i = 0; i < n; i++) {
         result = result || this.hasMajorDiagonalConflictAt(i);
       }
@@ -131,7 +131,7 @@
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalIndex){
-      var n = Object.keys(this.attributes).length-1;
+      var n = this.get('n');
       var diagonal = [];
       var x = Math.max(0, minorDiagonalIndex - n + 2);
       var y = Math.min(n-1, 1 + minorDiagonalIndex);
@@ -148,7 +148,7 @@
 
     hasAnyMinorDiagonalConflicts: function(){
       var result = false;
-      var n = Object.keys(this.attributes).length-1;
+      var n = this.get('n');
       for(var i = 0; i < (2*n-3); i++) {
         result = result || this.hasMinorDiagonalConflictAt(i);
       }
