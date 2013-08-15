@@ -58,18 +58,75 @@ window.countNRooksSolutions = function(n){
   return solutionCount;
 };
 
-window.findNQueensSolution = function(n){
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' queens:', solution);
-  return solution;
+window.findNQueensSolution = function(n, all){
+  var solved = false;
+  all = all || false;
+  // Start with an empty board
+  var boardLayout = [];
+  var newRow = [];
+  var solutions = {};
+  for (var i = 0; i < n; i++) {
+    newRow.push(0);
+  }
+  for (var j = 0; j < n; j++) {
+    boardLayout[j] = newRow.slice();
+  }
+  var board = new Board(boardLayout);
+  var traverser = function(boardLayout, newRowNumber) {
+    // List out the columns that already have rooks, so we can skip them
+    var queenColumns = _(boardLayout).map(function(row) {
+      return _(row).indexOf(1);
+    });
+    if (!solved || all) {
+      var traverseBoard = new Board(boardLayout);
+      // thisRow = array of 0s
+      var thisRow = traverseBoard.get(newRowNumber);
+      //if (thisRow.length === 4) debugger;
+      for (var i = 0; i < thisRow.length; i++) {
+        if (!_(queenColumns).contains(i)) {
+          thisRow[i] = 1;
+          traverseBoard.set(newRowNumber,thisRow.slice());
+          thisRow[i] = 0;
+          if (newRowNumber === thisRow.length-1) {
+            if (!traverseBoard.hasAnyQueensConflicts()) {
+              board = new Board(traverseBoard.rows());
+              solutions[JSON.stringify(traverseBoard.rows())] = true;
+              solved = true;
+            }
+          } else {
+            traverser(traverseBoard.rows(),newRowNumber+1);
+          }
+        }
+      }
+    }
+  };
+  traverser(board.rows(),0);
+  console.log('Single solution for ' + n + ' queens:', solved);
+  if (all) {
+    console.log(solutions);
+    return solutions;
+  } else return board.rows();
 };
 
 window.countNQueensSolutions = function(n){
-  var solutionCount = undefined; //fixme
+  var solutionCount = Object.keys(this.findNQueensSolution(n, true)).length;
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
+  
+  /*var traverse = function(placements) {
+    if (placements.length < n) {
+      for (var col = 0; col < n; col++) {
+        traverse(placements.concat([col]));
+      }
+    } else {
+      solutionCount++;
+    }
+  };
+  traverse([]);
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  return solutionCount;
+  */
 };
 
 
