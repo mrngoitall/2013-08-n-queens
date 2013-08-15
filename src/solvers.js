@@ -5,11 +5,12 @@
 window.findNRooksSolution = function(n){
   var solution = undefined; //fixme
   debugger;
-  var board = new Board([[0, 1, 0, 0],
+  var board = new Board([
+      [0, 1, 0, 0],
       [0, 0, 1, 0],
       [0, 0, 0, 0],
-      [1, 0, 0, 0]]);
-  console.log(board.hasMajorDiagonalConflictAt());
+      [0, 0, 0, 0]]);
+  console.log(board.hasAnyMajorDiagonalConflicts());
   console.log('Single solution for ' + n + ' rooks:', solution);
   return solution;
 };
