@@ -124,10 +124,8 @@
 
     hasMinorDiagonalConflictAt: function(minorDiagonalIndex){
       var n = Object.keys(this.attributes).length-1;
-      var startX = 0;
-      var startY = 1;
       var diagonal = [];
-      var x = Math.max(startX, minorDiagonalIndex - n + 2);
+      var x = Math.max(0, minorDiagonalIndex - n + 2);
       var y = Math.min(n-1, 1 + minorDiagonalIndex);
       while (Math.max(x,y) < n && Math.min(x,y) >= 0) {
         diagonal.push(this.get(x)[y]);
