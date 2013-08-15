@@ -4,7 +4,12 @@
 
 window.findNRooksSolution = function(n){
   var solution = undefined; //fixme
-
+  debugger;
+  var board = new Board([[0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 0],
+      [1, 0, 0, 0]]);
+  console.log(board.hasMajorDiagonalConflictAt());
   console.log('Single solution for ' + n + ' rooks:', solution);
   return solution;
 };

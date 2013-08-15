@@ -97,19 +97,14 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalIndex){
       var that = this;
       var row = this.get(majorDiagonalIndex);
-      console.log('starting to look at row '+majorDiagonalIndex);
-      console.log(row);
       var n = Object.keys(this.attributes).length-1;
       var result = false;
       var lookRight = function(row,column) {
         row++;
         column++;
-        console.log('looking at '+row+','+column);
         var nextRow = that.get(row);
-        console.log(nextRow[column]);
         //debugger;
         if (nextRow[column]) {
-          console.log('found another 1!');
           result = true;
           column = n;
         } else if (column < n-1 && row < n-1) {
@@ -118,12 +113,10 @@
       };
       for (var i = 0; i < row.length; i++) {
         if (row[i]) {
-          console.log('1 detected at column '+i);
           if (i < n-1 && majorDiagonalIndex < n-1)
             lookRight(majorDiagonalIndex,i);
         }
       }
-      console.log('returning '+result);
       return result;
     },
 
@@ -134,7 +127,6 @@
         result = result || this.hasMajorDiagonalConflictAt(i);
       }
       console.log('final result: '+result);
-      console.log('end of hasAnyMajorDiagonalConflicts');
       return result;
     },
 
