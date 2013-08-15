@@ -2,11 +2,13 @@
 // hint: you'll need to do a full-search of all possible arrangements of pieces!
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
 
-window.findNRooksSolution = function(n){
+window.findNRooksSolution = function(n, all){
   var solved = false;
+  all = all || false;
   // Start with an empty board
   var boardLayout = [];
   var newRow = [];
+  var solutions = {};
   for (var i = 0; i < n; i++) {
     newRow.push(0);
   }
@@ -14,13 +16,16 @@ window.findNRooksSolution = function(n){
     boardLayout[j] = newRow.slice();
   }
   var board = new Board(boardLayout);
-  var traverser = function(boardLayout, newRowNumber, rookColumns) {
-    rookColumns = rookColumns || [];
-    if (!solved) {
-      // Unoptimized traverser
+  var traverser = function(boardLayout, newRowNumber) {
+    // List out the columns that already have rooks, so we can skip them
+    var rookColumns = _(boardLayout).map(function(row) {
+      return _(row).indexOf(1);
+    });
+    if (!solved || all) {
       var traverseBoard = new Board(boardLayout);
       // thisRow = array of 0s
       var thisRow = traverseBoard.get(newRowNumber);
+      //if (thisRow.length === 4) debugger;
       for (var i = 0; i < thisRow.length; i++) {
         if (!_(rookColumns).contains(i)) {
           thisRow[i] = 1;
@@ -29,11 +34,11 @@ window.findNRooksSolution = function(n){
           if (newRowNumber === thisRow.length-1) {
             if (!traverseBoard.hasAnyRooksConflicts()) {
               board = new Board(traverseBoard.rows());
+              solutions[JSON.stringify(traverseBoard.rows())] = true;
               solved = true;
             }
           } else {
-            rookColumns.push(i);
-            traverser(traverseBoard.rows(),newRowNumber+1,rookColumns);
+            traverser(traverseBoard.rows(),newRowNumber+1);
           }
         }
       }
@@ -41,12 +46,13 @@ window.findNRooksSolution = function(n){
   };
   traverser(board.rows(),0);
   console.log('Single solution for ' + n + ' rooks:', solved);
-  console.log(board.rows());
-  return board.rows();
+  if (all) {
+    return solutions;
+  } else return board.rows();
 };
 
 window.countNRooksSolutions = function(n){
-  var solutionCount = undefined; //fixme
+  var solutionCount = Object.keys(this.findNRooksSolution(n, true)).length;
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
