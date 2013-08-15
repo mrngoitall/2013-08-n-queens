@@ -100,8 +100,8 @@
       var startX = 0;
       var startY = n-2;
       var diagonal = [];
-      x = Math.max(startX, majorDiagonalIndex-startY);
-      y = Math.max(startY-majorDiagonalIndex,0);
+      var x = Math.max(startX, majorDiagonalIndex-startY);
+      var y = Math.max(startY-majorDiagonalIndex,0);
       while (Math.max(x,y) < n) {
         diagonal.push(this.get(x)[y]);
         x++;
@@ -119,16 +119,34 @@
       for(var i = 0; i < (2*n-3); i++) {
         result = result || this.hasMajorDiagonalConflictAt(i);
       }
-      return result; // fixme
+      return result;
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalIndex){
-      // var startX = 
-      // return false; // fixme
+      var n = Object.keys(this.attributes).length-1;
+      var startX = 0;
+      var startY = 1;
+      var diagonal = [];
+      var x = Math.max(startX, minorDiagonalIndex - n + 2);
+      var y = Math.min(n-1, 1 + minorDiagonalIndex);
+      while (Math.max(x,y) < n && Math.min(x,y) >= 0) {
+        diagonal.push(this.get(x)[y]);
+        x++;
+        y--;
+      }
+      var result = _.reduce(diagonal, function(sum, value){
+        return sum + value;
+      }, 0);
+      return result > 1 ? true : false;
     },
 
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
+      var result = false;
+      var n = Object.keys(this.attributes).length-1;
+      for(var i = 0; i < (2*n-3); i++) {
+        result = result || this.hasMinorDiagonalConflictAt(i);
+      }
+      return result;
     }
 
   });
