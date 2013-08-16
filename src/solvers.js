@@ -81,7 +81,6 @@ window.findNQueensSolution = function(n, all){
       var traverseBoard = new Board(boardLayout);
       // thisRow = array of 0s
       var thisRow = traverseBoard.get(newRowNumber);
-      //if (thisRow.length === 4) debugger;
       for (var i = 0; i < thisRow.length; i++) {
         if (!_(queenColumns).contains(i)) {
           thisRow[i] = 1;
@@ -105,7 +104,10 @@ window.findNQueensSolution = function(n, all){
   if (all) {
     console.log(solutions);
     return solutions;
-  } else return board.rows();
+  } else {
+    console.log(board.rows());
+    return board.rows();
+  }
 };
 
 window.countNQueensSolutions = function(n){
@@ -113,20 +115,6 @@ window.countNQueensSolutions = function(n){
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
-  
-  /*var traverse = function(placements) {
-    if (placements.length < n) {
-      for (var col = 0; col < n; col++) {
-        traverse(placements.concat([col]));
-      }
-    } else {
-      solutionCount++;
-    }
-  };
-  traverse([]);
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
-  */
 };
 
 

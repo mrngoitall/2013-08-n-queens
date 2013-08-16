@@ -118,16 +118,6 @@
         }
       }
       return result;
-      /*
-      var pieceCount = 0;
-      for (var rowIndex = 0; rowIndex < this.get('n'); rowIndex++) {
-        var colIndex = majorDiagonalIndex + rowIndex;
-        if (this._isInBounds(rowIndex, colIndex) && this.get(rowIndex)[colIndex]) {
-          pieceCount++;
-        }
-      }
-      return 1 < pieceCount;
-      */
     },
 
     hasAnyMajorDiagonalConflicts: function(){
@@ -136,12 +126,7 @@
       for(var i = 0; i < n; i++) {
         result = result || this.hasMajorDiagonalConflictAt(i);
       }
-      console.log('final result: '+result);
       return result;
-      /*return 0 < _(_.range(-this.get('n')+1, this.get('n')).reduce(function(conflictCount, rowIndex) {
-        return conflictCount + this.hasRowConflictAt(rowIndex);
-      }),0, this);
-      */
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalIndex){
