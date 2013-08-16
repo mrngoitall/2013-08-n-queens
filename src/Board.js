@@ -103,7 +103,6 @@
         row++;
         column++;
         var nextRow = that.get(row);
-        //debugger;
         if (nextRow[column]) {
           result = true;
           column = n;

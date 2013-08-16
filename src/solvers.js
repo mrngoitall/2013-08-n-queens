@@ -25,7 +25,6 @@ window.findNRooksSolution = function(n, all){
       var traverseBoard = new Board(boardLayout);
       // thisRow = array of 0s
       var thisRow = traverseBoard.get(newRowNumber);
-      //if (thisRow.length === 4) debugger;
       for (var i = 0; i < thisRow.length; i++) {
         if (!_(rookColumns).contains(i)) {
           thisRow[i] = 1;
@@ -72,17 +71,19 @@ window.findNQueensSolution = function(n, all){
     boardLayout[j] = newRow.slice();
   }
   var board = new Board(boardLayout);
-  var traverser = function(boardLayout, newRowNumber) {
+  var traverser = function(boardLayout, newRowNumber, queenDiagonals) {
     // List out the columns that already have rooks, so we can skip them
     var queenColumns = _(boardLayout).map(function(row) {
       return _(row).indexOf(1);
     });
+    queenDiagonals = queenDiagonals || [];
     if (!solved || all) {
       var traverseBoard = new Board(boardLayout);
       // thisRow = array of 0s
       var thisRow = traverseBoard.get(newRowNumber);
       for (var i = 0; i < thisRow.length; i++) {
-        if (!_(queenColumns).contains(i)) {
+        console.log('should not find '+ i + ' in the '+newRowNumber+' array: '+queenDiagonals[newRowNumber]);
+        if (!_(queenColumns).contains(i) && !_(queenDiagonals[newRowNumber]).contains(i)) {
           thisRow[i] = 1;
           traverseBoard.set(newRowNumber,thisRow.slice());
           thisRow[i] = 0;
@@ -93,7 +94,14 @@ window.findNQueensSolution = function(n, all){
               solved = true;
             }
           } else {
-            traverser(traverseBoard.rows(),newRowNumber+1);
+            if (queenDiagonals[newRowNumber]) {
+              queenDiagonals[newRowNumber].push(i);
+              console.log('pushed '+i+' to row '+newRowNumber);
+            } else {
+              queenDiagonals[newRowNumber] = [i];
+              console.log('pushed '+i+' to row '+newRowNumber);
+            }
+            traverser(traverseBoard.rows(),newRowNumber+1,queenDiagonals);
           }
         }
       }
